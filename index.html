@@ -2,10 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kona Consulting">
+<meta name="theme-color" content="#0f2044">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Kona Consulting — Websites That Convert</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* ============================================================
+     iOS / Safari OPTIMIZATIONS
+     ============================================================ */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-overflow-scrolling: touch;
+    text-rendering: optimizeLegibility;
+  }
+  button, a, input, textarea, select {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, a {
+    touch-action: manipulation;
+  }
+  /* Stop iOS from styling inputs/buttons natively */
+  input, textarea, select, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: inherit;
+  }
+
   :root {
     --navy: #0f2044;
     --blue: #1a3a6e;
@@ -36,10 +69,13 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
+    padding-top: env(safe-area-inset-top, 0);
+    padding-left: max(48px, env(safe-area-inset-left));
+    padding-right: max(48px, env(safe-area-inset-right));
     background: rgba(15,32,68,0.97);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255,255,255,0.08);
-    padding: 0 48px;
     height: 72px;
     display: flex;
     align-items: center;
@@ -95,6 +131,8 @@
   /* ---- HERO ---- */
   .hero {
     min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
     background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 55%, #1e4a8a 100%);
     display: flex;
     align-items: center;
@@ -225,6 +263,7 @@
     border-radius: 12px;
     padding: 24px;
     text-align: center;
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     transition: background 0.2s, transform 0.2s;
   }
@@ -699,11 +738,14 @@
     border: 1.5px solid rgba(255,255,255,0.15);
     border-radius: 8px;
     padding: 13px 16px;
-    font-size: 0.9rem;
+    font-size: 16px; /* iOS Safari zooms on focus when < 16px */
     color: #fff;
     font-family: 'Inter', sans-serif;
     transition: border-color 0.2s, background 0.2s;
     outline: none;
+  }
+  @media (min-width: 769px) {
+    input, textarea { font-size: 0.9rem; }
   }
 
   input::placeholder, textarea::placeholder {
@@ -909,7 +951,7 @@
     border: 1.5px solid rgba(255,255,255,0.15);
     border-radius: 8px;
     padding: 13px 16px;
-    font-size: 0.9rem;
+    font-size: 16px; /* iOS zoom prevention */
     color: rgba(255,255,255,0.85);
     font-family: 'Inter', sans-serif;
     transition: border-color 0.2s, background 0.2s;
@@ -1057,6 +1099,16 @@
   }
 
 
+
+  /* Only apply hover effects on devices that actually have hover */
+  @media (hover: none) {
+    .stat-card:hover, .service-card:hover, .testimonial-card:hover,
+    .btn-primary:hover, .nav-cta:hover {
+      transform: none !important;
+    }
+    .service-card:hover::before { transform: scaleX(0); }
+  }
+
   /* ---- SPINNER ---- */
   .spinner {
     display: inline-block;
@@ -1075,6 +1127,170 @@
   .btn-submit:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+
+  /* ============================================================
+     RESPONSIVE - TABLET (≤1024px)
+     ============================================================ */
+  @media (max-width: 1024px) {
+    section { padding: 72px 32px; }
+    .nav-links { gap: 24px; }
+    .hero { padding: 100px 32px 60px; }
+    .hero-inner { gap: 48px; }
+    .hero-logo-wrap { width: 320px; height: 320px; }
+    .hero-logo-wrap img { width: 250px; height: 250px; }
+    .services-grid, .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+    .process-steps { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .process-steps::before { display: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .about-grid, .contact-grid { gap: 48px; }
+  }
+
+  /* ============================================================
+     RESPONSIVE - MOBILE (≤768px)
+     ============================================================ */
+  @media (max-width: 768px) {
+    section { padding: 56px 20px; }
+
+    /* NAV */
+    nav {
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      height: 64px;
+    }
+    .nav-logo img { height: 44px; }
+    .nav-links {
+      gap: 4px;
+    }
+    .nav-links li:not(:last-child) { display: none; }
+    .nav-cta {
+      padding: 8px 16px !important;
+      font-size: 0.8rem !important;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 88px 20px 56px;
+      min-height: auto;
+    }
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 2.1rem; }
+    .hero-sub {
+      font-size: 0.95rem;
+      margin: 0 auto 32px;
+      max-width: 100%;
+    }
+    .hero-actions { justify-content: center; }
+    .hero-badge { font-size: 0.7rem; padding: 5px 12px; }
+    .btn-primary, .btn-ghost { padding: 12px 22px; font-size: 0.88rem; }
+    .hero-stats {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 40px;
+    }
+    .stat-card { padding: 18px 12px; }
+    .stat-number { font-size: 1.7rem; }
+    .stat-label { font-size: 0.7rem; }
+    .hero-right { order: -1; }
+    .hero-logo-wrap {
+      width: 240px;
+      height: 240px;
+    }
+    .hero-logo-wrap img { width: 190px; height: 190px; }
+
+    /* SECTION TITLES */
+    .section-title { font-size: 1.7rem; }
+    .section-body { font-size: 0.95rem; }
+
+    /* ABOUT */
+    .about-grid { grid-template-columns: 1fr; gap: 36px; }
+    .about-visual { padding: 32px 24px; }
+    .about-visual img { width: 160px; height: 160px; }
+
+    /* SERVICES */
+    .services-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .service-card { padding: 28px 22px; }
+
+    /* PROCESS */
+    .process-steps {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-top: 40px;
+    }
+    .step-circle {
+      width: 48px;
+      height: 48px;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    /* CTA STRIP */
+    .cta-strip { padding: 56px 20px; }
+
+    /* CONTACT */
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .contact-tabs {
+      flex-direction: column;
+      margin-bottom: 28px;
+      margin-top: 28px;
+    }
+    .tab-btn { width: 100%; justify-content: center; }
+    .contact-form { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .time-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .time-slot {
+      padding: 11px 4px;
+      font-size: 0.78rem;
+    }
+
+    /* FOOTER */
+    footer { padding: 56px 20px 32px; }
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      margin-bottom: 36px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+  }
+
+  /* ============================================================
+     RESPONSIVE - SMALL MOBILE (≤380px)
+     ============================================================ */
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 1.85rem; }
+    .section-title { font-size: 1.5rem; }
+    .hero-stats { grid-template-columns: 1fr; }
+    .time-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Bottom safe-area inset for hero (iPhone notch landscape, etc.) */
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 </style>
 </head>
@@ -1354,16 +1570,16 @@
           <div class="form-row">
             <div class="form-group">
               <label for="msg-name">Your Name <span class="req">*</span></label>
-              <input type="text" id="msg-name" placeholder="John Smith">
+              <input type="text" id="msg-name" placeholder="John Smith" autocomplete="name" autocapitalize="words" spellcheck="false">
             </div>
             <div class="form-group">
               <label for="msg-email">Email Address <span class="req">*</span></label>
-              <input type="email" id="msg-email" placeholder="john@company.com">
+              <input type="email" id="msg-email" placeholder="john@company.com" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="email">
             </div>
           </div>
           <div class="form-group">
             <label for="msg-company">Company Name</label>
-            <input type="text" id="msg-company" placeholder="Company (optional)">
+            <input type="text" id="msg-company" placeholder="Company (optional)" autocomplete="organization" autocapitalize="words">
           </div>
           <div class="form-group">
             <label for="msg-project">Project Type</label>
@@ -1409,11 +1625,11 @@
           <div class="form-row">
             <div class="form-group">
               <label for="sched-name">Your Name <span class="req">*</span></label>
-              <input type="text" id="sched-name" placeholder="John Smith">
+              <input type="text" id="sched-name" placeholder="John Smith" autocomplete="name" autocapitalize="words" spellcheck="false">
             </div>
             <div class="form-group">
               <label for="sched-email">Email Address <span class="req">*</span></label>
-              <input type="email" id="sched-email" placeholder="john@company.com">
+              <input type="email" id="sched-email" placeholder="john@company.com" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="email">
             </div>
           </div>
 
